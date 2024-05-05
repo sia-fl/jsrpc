@@ -116,3 +116,24 @@ export function analyzeNode(node: ts.Node, options: AnalyzedOptions) {
   }
   ts.forEachChild(node, child => analyzeNode(child, options))
 }
+
+export function findPipeAssignments(node: ts.Node) {
+  const assignments: string[] = []
+  function visit(node: ts.Node) {
+    if (ts.isVariableStatement(node)) {
+      for (const declaration of node.declarationList.declarations) {
+        if (declaration.initializer && ts.isCallExpression(declaration.initializer)) {
+          const expression = declaration.initializer.expression
+          // 检查函数名是否为 "pipe"
+          if (expression && ts.isIdentifier(expression) && expression.escapedText === 'pipe') {
+            if (declaration.name && ts.isIdentifier(declaration.name))
+              assignments.push(declaration.name.escapedText.toString())
+          }
+        }
+      }
+    }
+    ts.forEachChild(node, visit)
+  }
+  ts.forEachChild(node, visit)
+  return assignments
+}

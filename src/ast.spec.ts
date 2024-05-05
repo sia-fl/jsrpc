@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import ts from 'typescript'
 import type { AnalyzedOptions, ImportedObject, UseServerFunction } from './type'
-import { analyzeNode, extractImports } from './ast'
+import { analyzeNode, extractImports, findPipeAssignments } from './ast'
 
 describe('should', () => {
   it(
@@ -55,6 +55,31 @@ function ReactComponent() {
       expect(options.functions[0].params.length).toEqual(1)
       expect(options.functions[0].params[0].name).toEqual('a')
       expect(options.functions[0].params[0].type).toEqual('number')
+    },
+  )
+
+  it(
+    'find pipe assignments',
+    () => {
+      const sourceCode = `
+const accc = pipe(zodResolver(z.object({
+    name: z.string(),
+    age: z.number(),
+})), (i) => {
+    console.log(i.name)
+    return 123
+})
+`
+      const sourceFile = ts.createSourceFile(
+        'example.ts',
+        sourceCode,
+        ts.ScriptTarget.ESNext,
+        true,
+      )
+      const assignments = findPipeAssignments(sourceFile)
+
+      expect(assignments.length).eq(1)
+      expect(assignments[0]).eq('accc')
     },
   )
 })
