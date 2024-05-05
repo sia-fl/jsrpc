@@ -1,2 +1,3 @@
-export const one = 1
-export const two = 2
+import { JsrpcPlugin } from './plugin'
+
+export default JsrpcPlugin

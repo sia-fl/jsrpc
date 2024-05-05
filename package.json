@@ -1,5 +1,5 @@
 {
-  "name": "jsrpc",
+  "name": "viembed",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@9.0.2",
@@ -7,60 +7,62 @@
   "author": "杨伟杰 <sia-fl@outlook.com>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/sia-fl",
-  "homepage": "https://github.com/sia-fl/jsrpc#readme",
+  "homepage": "https://github.com/sia-fl/viembed#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sia-fl/jsrpc.git"
+    "url": "git+https://github.com/sia-fl/viembed.git"
   },
-  "bugs": "https://github.com/sia-fl/jsrpc/issues",
+  "bugs": "https://github.com/sia-fl/viembed/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./dist/index.d.ts"
-      ]
-    }
-  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
-    "dev": "unbuild --stub",
+    "build": "tsc --declaration --emitDeclarationOnly && tsx build.mts",
     "lint": "eslint .",
-    "prepublishOnly": "nr build",
-    "release": "bumpp && npm publish",
-    "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
+  },
+  "dependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "@hono/zod-validator": "^0.2.1",
+    "@vue/compiler-sfc": "^3.4.26",
+    "hono": "^4.2.9",
+    "http-proxy-middleware": "^3.0.0",
+    "vite-plugin-dts": "^3.9.0",
+    "zod": "^3.23.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.14.0",
     "@antfu/ni": "^0.21.12",
     "@antfu/utils": "^0.7.7",
+    "@types/babel__core": "^7.20.5",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.12.7",
-    "bumpp": "^9.4.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "esbuild": "^0.20.2",
+    "esbuild-plugin-file-path-extensions": "^2.0.0",
     "eslint": "^9.0.0",
-    "esno": "^4.7.0",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "fs-extra": "^11.2.0",
     "lint-staged": "^15.2.2",
     "pnpm": "^9.0.2",
     "rimraf": "^5.0.5",
     "simple-git-hooks": "^2.11.1",
+    "tiny-glob": "^0.2.9",
+    "tsx": "^4.7.3",
     "typescript": "^5.4.5",
-    "unbuild": "^2.0.0",
     "vite": "^5.2.9",
     "vitest": "^1.5.0"
   },

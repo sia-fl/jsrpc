@@ -2,13 +2,21 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["ESNext"],
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
     "strict": true,
     "strictNullChecks": true,
+    "outDir": "dist",
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts", "src/**/*.stories.ts", "src/**/*.d.ts"]
 }
