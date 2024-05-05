@@ -1,3 +1,4 @@
+import buffer from 'node:buffer'
 import type { PluginOption } from 'vite'
 import ts from 'typescript'
 import { analyzeNode, extractImports } from './ast'
@@ -60,6 +61,7 @@ export const JsrpcPlugin: (option: JsrpcPluginOptions) => PluginOption = (option
         if (func.type === 'function')
           funcname = func.name
 
+        const payload = buffer.Buffer.from(JSON.stringify(func)).toString('base64')
         const newCode = `\
 function ${funcname}(...args) {
   fetch('/viembed', {
@@ -70,7 +72,7 @@ function ${funcname}(...args) {
     body: JSON.stringify({
       code: '${filename}-${func.name}',
       data: args,
-      imports: '${JSON.stringify(func.usedImports)}'
+      func: '${payload}'
     })
   })
 }`
