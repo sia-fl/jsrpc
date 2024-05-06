@@ -1,7 +1,7 @@
 {
   "name": "viembed",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "pnpm@9.0.2",
   "description": "将 js 在编译时决定 1. 在哪里 2. 怎么运行",
   "author": "杨伟杰 <sia-fl@outlook.com>",

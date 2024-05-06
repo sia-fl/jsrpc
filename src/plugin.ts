@@ -63,11 +63,13 @@ export const JsrpcPlugin: (option: JsrpcPluginOptions) => PluginOption = (option
 
         const payload = buffer.Buffer.from(JSON.stringify(func)).toString('base64')
         const newCode = `\
-function ${funcname}(...args) {
-  fetch('/viembed', {
+async function ${funcname}(...args) {
+  const token = localStorage.getItem('token')
+  return fetch('/viembed', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
     },
     body: JSON.stringify({
       code: '${filename}-${func.name}',
@@ -75,6 +77,13 @@ function ${funcname}(...args) {
       func: '${payload}'
     })
   })
+    .then(async (res) => {
+      const data = await res.json()
+      if (!data.success) {
+        throw new Error('fail on use server function')
+      }
+      return data.data
+    })
 }`
         const newCodeLength = newCode.length
         code = bcode + newCode + acode

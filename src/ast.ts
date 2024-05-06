@@ -88,6 +88,14 @@ export function analyzeNode(node: ts.Node, options: AnalyzedOptions) {
             }
           })
           const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
+          /**
+           * 将 usedImports 中 identifier 重复的条数删除
+           */
+          const uniqueImports: ImportedObject[] = []
+          usedImports.forEach((item) => {
+            if (!uniqueImports.some(i => i.identifier === item.identifier))
+              uniqueImports.push(item)
+          })
           options.functions.push({
             position: [node.getStart(), node.getEnd()],
             /**
